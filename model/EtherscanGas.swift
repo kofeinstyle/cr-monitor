@@ -25,11 +25,13 @@ struct EtherscanGas: Decodable {
     }
     
     init(from decoder: any Decoder) throws {
+
         let container = try decoder.container(keyedBy: CodingKeys.self)
         suggestBaseFee = try container.decode(String.self, forKey: .suggestBaseFee)//Float(suggestBaseFee) ?
         safeGasPrice = try container.decode(String.self, forKey: .SafeGasPrice)
         let price: Float = Float(suggestBaseFee) ?? 0.0
         standart = String(format: "%.1f", price)
+        
         if price < 10.0 {
             level = GasLevel.low
         } else if price >= 10.0 && price < 25.0 {
@@ -37,6 +39,5 @@ struct EtherscanGas: Decodable {
         } else {
             level = GasLevel.high
         }
-        
     }
 }

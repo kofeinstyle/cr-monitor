@@ -16,22 +16,24 @@ struct AppStatusItem: View {
 
     @ViewBuilder
     var mainContent: some View {
-        HStack {
+        HStack(alignment: .bottom) { //.firstTextBaseline
             
-            Image(systemName: getIcon())
+            Image("gas-station")
                 .fixedSize()
                 .imageScale(.large)
+//                .font(.system(size: 18))
                 .symbolEffect(.variableColor.cumulative, value: isFirstLoading())
+                
             
             Text(getText())
                 .fixedSize()
+                .imageScale(.large)
                 .contentTransition(.symbolEffect(.replace))
                 .bold()
         }
-        .padding(.horizontal, 8)
+        .padding(.horizontal, 5)
         .foregroundColor(currentColor())
-        
-        .contentShape(Rectangle())
+        .fixedSize()
     }
 
     var body: some View {
@@ -48,10 +50,11 @@ struct AppStatusItem: View {
     }
     
     private func getText() -> String {
-        if (gasFetcher.errorMessage != nil) {
+        if (gasFetcher.errorMessage != nil || (gasFetcher.gas?.standart) == nil) {
             return "~"
         }
-        return gasFetcher.gas?.standart ?? "~"
+        
+        return "\(gasFetcher.gas?.standart ?? "") Gwei"
     }
     
     private func currentColor() -> Color {
@@ -78,8 +81,8 @@ struct AppStatusItem: View {
         return gasFetcher.gas?.level == nil
     }
     
-    private func getIcon() -> String
-    {
+    private func getIcon() -> String {
+
         return gasFetcher.errorMessage != nil ? "network.slash" : "network"
     }
 }

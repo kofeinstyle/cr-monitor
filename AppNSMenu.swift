@@ -1,10 +1,7 @@
-
 import SwiftUI
 
 class AppNSMenu: NSMenu {
     private lazy var applicationName = ProcessInfo.processInfo.processName
-
-//    @Environment(\.openURL) private var openURL
     
     required override init(title: String) {
         super.init(title: title)
@@ -16,9 +13,10 @@ class AppNSMenu: NSMenu {
     }
     
     public func make () -> Self {
-    
+        
         let item = NSMenuItem(title: "Matcha", action: #selector(handleClick(_:)), keyEquivalent: "")
         item.target = self
+
         self.addItem(item)
         self.addItem(NSMenuItem.separator())
 
